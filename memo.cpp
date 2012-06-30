@@ -47,8 +47,6 @@ auto memo(std::function<Res(Args...)> f) -> std::function<Res(Args...)> {
 }
 
 int main() {
-    const int N = 42;
-
     std::function<int(int)> fib = [&](int n) -> int {
         if (n == 0)
             return 0;
@@ -58,7 +56,7 @@ int main() {
     };
     fib = memo(fib);
 
-    std::cout << fib(N) << "\n";
+    std::cout << fib(42) << "\n";
 
     return 0;
 }
