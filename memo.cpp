@@ -49,7 +49,7 @@ auto memo(std::function<Res(Args...)> f) -> std::function<Res(Args...)> {
 int main() {
     const int N = 42;
 
-    std::function<int(int)> fib = [&](int n) -> double {
+    std::function<int(int)> fib = [&](int n) -> int {
         if (n == 0)
             return 0;
         if (n == 1)
