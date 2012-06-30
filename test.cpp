@@ -7,8 +7,8 @@ int main() {
     for (auto x : {1, 2, 3, 4})
         m[x] = [](int x) { return x * x; }(x);
 
-    for (auto it = m.cbegin(); it != m.cend(); ++it)
-        std::cout << it->first  << ": " << it->second << "\n";
+    for (auto& x : m)
+        std::cout << x.first  << ": " << x.second << "\n";
 
     return 0;
 }

@@ -35,14 +35,10 @@ template <class Res, class... Args>
 auto memo(std::function<Res(Args...)> f) -> std::function<Res(Args...)> {
     std::unordered_map<std::tuple<Args...>, Res> cache;
     return [&](Args... args) {
-        auto t = std::make_tuple(args...);
-        auto it = cache.find(t);
-        if (it != cache.end())
-            return it->second;
-
-        Res res = f(args...);
-        cache[t] = res;
-        return res;
+        auto c = cache.emplace(std::make_tuple(args...));
+        if (c.second)
+            c.first->second = f(args...);
+        return c.first->second;
     };
 }
 
