@@ -18,10 +18,10 @@ void print_tuple(std::basic_ostream<Ch, Traits>& os, const Tuple& t, size_t_<0>)
 }
 
 namespace std {
-    template <class Ch, class Traits, class... Args>
-    ostream& operator<<(basic_ostream<Ch, Traits>& os, const tuple<Args...>& t) {
+    template <class Ch, class Traits, class... T>
+    ostream& operator<<(basic_ostream<Ch, Traits>& os, const tuple<T...>& t) {
         os << "[";
-        print_tuple(os, t, size_t_<sizeof...(Args)-1>());
+        print_tuple(os, t, size_t_<sizeof...(T)-1>());
         return os << "]";
     }
 }
