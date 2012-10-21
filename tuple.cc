@@ -7,7 +7,7 @@
 template<size_t I> struct size_t_ {};
 
 template<class Tuple, size_t I>
-void print_tuple(std::ostream& os, Tuple const& t, size_t_<I>) {
+void print_tuple(std::ostream& os, const Tuple& t, size_t_<I>) {
   print_tuple(os, t, size_t_<I-1>());
   os << ", " << std::get<I>(t);
 }
@@ -25,6 +25,7 @@ std::ostream& operator<<(std::ostream& os, const std::tuple<T...>& t) {
 }
 
 int main() {
+  std::cout << std::make_tuple(42) << "\n";
   std::cout << std::make_tuple(3.14, 6.28f, "hey you") << "\n";
   return 0;
 }

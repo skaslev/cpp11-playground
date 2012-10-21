@@ -53,7 +53,7 @@ int main() {
   };
   fib = memo(fib);
 
-  std::cout << fib(42) << std::endl;
+  std::cout << fib(42) << "\n";
 
   return 0;
 }
