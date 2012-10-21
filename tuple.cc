@@ -6,25 +6,30 @@
 //using size_t_ = std::integral_constant<size_t, I>;
 template<size_t I> struct size_t_ {};
 
-template<class Tuple, size_t I>
-void print_tuple(std::ostream& os, const Tuple& t, size_t_<I>) {
-  print_tuple(os, t, size_t_<I-1>());
-  os << ", " << std::get<I>(t);
+template<class... T, size_t I>
+typename std::enable_if<I < sizeof...(T), void>::type
+print_tuple(std::ostream& os, const std::tuple<T...>& t, size_t_<I>) {
+  os << std::get<I>(t);
+  if (I != sizeof...(T) - 1)
+    os << ", ";
+  print_tuple(os, t, size_t_<I + 1>());
 }
 
-template<class Tuple>
-void print_tuple(std::ostream& os, const Tuple& t, size_t_<0>) {
-  os << std::get<0>(t);
+template<class... T, size_t I>
+typename std::enable_if<I == sizeof...(T), void>::type
+print_tuple(std::ostream& os, const std::tuple<T...>& t, size_t_<I>) {
+  // nop
 }
 
-template<class ...T>
+template<class... T>
 std::ostream& operator<<(std::ostream& os, const std::tuple<T...>& t) {
   os << "[";
-  print_tuple(os, t, size_t_<sizeof...(T)-1>());
+  print_tuple(os, t, size_t_<0>());
   return os << "]";
 }
 
 int main() {
+  std::cout << std::make_tuple() << "\n";
   std::cout << std::make_tuple(42) << "\n";
   std::cout << std::make_tuple(3.14, 6.28f, "hey you") << "\n";
   return 0;
