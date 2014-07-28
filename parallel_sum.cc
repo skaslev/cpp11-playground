@@ -1,7 +1,7 @@
 #include <future>
-#include <vector>
-#include <numeric>
 #include <iostream>
+#include <numeric>
+#include <vector>
 
 template<class It>
 auto parallel_sum(It beg, It end) -> typename It::value_type {

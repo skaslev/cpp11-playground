@@ -1,11 +1,10 @@
-#include <iostream>
 #include <functional>
+#include <iostream>
 #include <type_traits>
 #include <unordered_map>
 
-//template<size_t I>
-//using size_t_ = std::integral_constant<size_t, I>;
-template<size_t I> struct size_t_ {};
+template<size_t I>
+using size_t_ = std::integral_constant<size_t, I>;
 
 template<class T>
 size_t hash_combine(size_t hash, const T& v) {
@@ -14,15 +13,15 @@ size_t hash_combine(size_t hash, const T& v) {
 }
 
 template<class... T, size_t I>
-typename std::enable_if<I < sizeof...(T), size_t>::type
-hash_tuple(size_t hash, const std::tuple<T...>& t, size_t_<I>) {
-  return hash_tuple(hash_combine(hash, std::get<I>(t)), t, size_t_<I + 1>());
-}
-
-template<class... T, size_t I>
 typename std::enable_if<I == sizeof...(T), size_t>::type
 hash_tuple(size_t hash, const std::tuple<T...>& t, size_t_<I>) {
   return hash;
+}
+
+template<class... T, size_t I>
+typename std::enable_if<I < sizeof...(T), size_t>::type
+hash_tuple(size_t hash, const std::tuple<T...>& t, size_t_<I>) {
+  return hash_tuple(hash_combine(hash, std::get<I>(t)), t, size_t_<I + 1>());
 }
 
 namespace std {
@@ -40,7 +39,7 @@ template<class Res, class... Args>
 auto memo(const std::function<Res(Args...)>& f) -> std::function<Res(Args...)> {
   std::unordered_map<std::tuple<Args...>, Res> cache;
   return [=](Args... args) mutable -> Res {
-    auto c = cache.emplace(std::make_tuple(args...));
+    auto c = cache.emplace(std::make_tuple(args...), Res());
     if (c.second)
       c.first->second = f(args...);
     return c.first->second;

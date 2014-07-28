@@ -26,11 +26,11 @@ int main() {
   std::cout << "p is" << (p ? "" : " NOT") << " truty\n";
   std::cout << "q is" << (q ? "" : " NOT") << " truty\n";
 
-  //int bar = p;            // FAIL
-  int bar2 = bool(p);       // OK
-  int bar3 = int(p);        // OK
-  //bool baz = p;           // FAIL
-  bool baz2 = bool(p);      // OK
+  // int bar = p;        // FAIL
+  int bar2 = bool(p);    // OK
+  // int bar3 = int(p);  // FAIL
+  // bool baz = p;       // FAIL
+  bool baz2 = bool(p);   // OK
 
   return 0;
 }

@@ -1,10 +1,15 @@
+#include <iostream>
 #include <tuple>
 #include <type_traits>
-#include <iostream>
 
-//template<size_t I>
-//using size_t_ = std::integral_constant<size_t, I>;
-template<size_t I> struct size_t_ {};
+template<size_t I>
+using size_t_ = std::integral_constant<size_t, I>;
+
+template<class... T, size_t I>
+typename std::enable_if<I == sizeof...(T), void>::type
+print_tuple(std::ostream& os, const std::tuple<T...>& t, size_t_<I>) {
+  // nop
+}
 
 template<class... T, size_t I>
 typename std::enable_if<I < sizeof...(T), void>::type
@@ -13,12 +18,6 @@ print_tuple(std::ostream& os, const std::tuple<T...>& t, size_t_<I>) {
   if (I != sizeof...(T) - 1)
     os << ", ";
   print_tuple(os, t, size_t_<I + 1>());
-}
-
-template<class... T, size_t I>
-typename std::enable_if<I == sizeof...(T), void>::type
-print_tuple(std::ostream& os, const std::tuple<T...>& t, size_t_<I>) {
-  // nop
 }
 
 template<class... T>
