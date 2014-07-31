@@ -3,7 +3,7 @@
 
 // data List a = Nil | Cons a (List a)
 
-template<typename T>
+template<class T>
 struct List {
   enum Tag { Nil, Cons } tag;
   union Value {
@@ -15,7 +15,7 @@ struct List {
 };
 
 
-template<typename T>
+template<class T>
 List<T> Nil() {
   return List<T> {
     .tag = List<T>::Nil,
@@ -23,7 +23,7 @@ List<T> Nil() {
 }
 
 
-template<typename T>
+template<class T>
 List<T> Cons(const T& value, List<T>* tail) {
   return List<T> {
     .tag = List<T>::Cons,
@@ -38,7 +38,7 @@ List<T> Cons(const T& value, List<T>* tail) {
 // length Nil = 0
 // length (Cons _ tail) = 1 + length tail
 
-template<typename T>
+template<class T>
 int Length(const List<T>& list) {
   if (list.tag == List<T>::Nil)
     return 0;
@@ -46,7 +46,7 @@ int Length(const List<T>& list) {
 }
 
 
-template<typename T>
+template<class T>
 int Length2(const List<T>& list) {
   int len = 0;
   for (auto e = &list; e->tag != List<T>::Nil; e = e->value.cons.tail) {
@@ -59,14 +59,14 @@ int Length2(const List<T>& list) {
 
 // data Option a = None | Some a
 
-template<typename T>
+template<class T>
 struct Option {
   enum { None, Some } tag;
   union { T some; } value;
 };
 
 
-template<typename T>
+template<class T>
 Option<T> mkNone() {
   return Option<T> {
     .tag = Option<T>::None,
@@ -74,7 +74,7 @@ Option<T> mkNone() {
 }
 
 
-template<typename T>
+template<class T>
 Option<T> mkSome(const T& value) {
   return Option<T> {
     .tag = Option<T>::Some,
@@ -82,13 +82,13 @@ Option<T> mkSome(const T& value) {
   };
 }
 
-template<typename T>
+template<class T>
 bool isNone(const Option<T>& x) {
   return x.tag == Option<T>::Some;
 }
 
 
-template<typename T>
+template<class T>
 struct Descriptor {
   int offset;
   int length;
@@ -96,7 +96,7 @@ struct Descriptor {
 };
 
 
-template<typename T>
+template<class T>
 Descriptor<T> mkDescriptor(T&& offset, T&& length, T&& stride=T(0)) {
   return Descriptor<T> {
     .offset = offset,
